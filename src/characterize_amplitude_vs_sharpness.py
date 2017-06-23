@@ -28,7 +28,6 @@ def CalculateRelativeAmp(filename):
 		
 	def window(ts,xs,tmin,tmax):
 		tnew,xnew=[],[]
-		print ts[0], ts[-1], tmin, tmax
 		for ii in range(len(ts)):
 			t=ts[ii]
 			x=xs[ii]
@@ -44,7 +43,6 @@ def CalculateRelativeAmp(filename):
 		fin=open('%s/OUTPUT_FILES/STATIONS' % (filename))
 		lines=fin.readlines()
 		nfo=lines[StationNumber-1].strip('\n').split()
-		print nfo
 		x=float(nfo[2])/1000. - 1000.
 		return x
 
@@ -74,19 +72,16 @@ def CalculateRelativeAmp(filename):
 			vapp=vs/sin(deg*pi/180.0)
 		elif Phase=='Ra':
 			vapp=0.89*vs
-		print 'vapp,xorig,torig,xSta = %f %f %f %f ' % (vapp,xorig,torig,xSta)
 		ttarg=calculateMoveout(vapp,xorig,torig,xSta)
 		tsWin,xsWin=window(t,uz,ttarg-dtwin,ttarg+dtwin)
-		print xsWin
 		PhaseAmps[Phase]=max(abs(xsWin))
 
-        import matplotlib as mpl
-        mpl.use('PS')
-        import pylab as plt
-
-	plt.plot(t,uz,'black')
-	plt.plot(tsWin,xsWin,'red')
-	plt.savefig('debug.eps')
+        #import matplotlib as mpl
+        #mpl.use('PS')
+        #import pylab as plt
+	#plt.plot(t,uz,'black')
+	#plt.plot(tsWin,xsWin,'red')
+	#plt.savefig('debug.eps')
 
 	return PhaseAmps['Ra']/PhaseAmps['S']
 
