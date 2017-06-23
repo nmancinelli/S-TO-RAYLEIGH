@@ -391,7 +391,7 @@ def write_interfaces(H,N_ELEM_VERT,W,AMPLITUDE,WAVLEN):
                 xs=arange(0,W+dx,dx)
                 fout.write(' %d\n' % len(xs))
                 for x in xs:
-			y=H+a/2.0*(erf((x-x0)/xchar)-1.0)
+			y=H+a/2.0*(erf(2.*(x-x0)/xchar)-1.0)
                         fout.write(' %7.0f %7.0f\n' % (x,y))
 
 	fout=open('interfaces.dat','w')
