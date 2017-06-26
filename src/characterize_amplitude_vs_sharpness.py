@@ -7,9 +7,18 @@ def main():
 	RelativeAmps=GetRelativeAmps(Files)
 	SharpnessParams=GetSharpnessParams(Files)
 
-	for File in Files:
-		print SharpnessParams[File], RelativeAmps[File]
+	#print RelativeAmps
 
+	print 'DZ (km) DX (km) ASPECT AMP'
+
+	for DZ in [2500, 5000, 10000]:
+		for DX in [25000, 50000, 100000]:
+			File='OUTPUT_FILES_23-%d-%d' % (DZ,DX)
+			#print SharpnessParams[File], RelativeAmps[File]
+			aspect=float(SharpnessParams[File][0])/float(SharpnessParams[File][1])
+			string=' %8d  %8d %.4f %.4f' % (SharpnessParams[File][0]/1000., SharpnessParams[File][1]/1000., aspect, RelativeAmps[File])
+			print string
+	
 	#list relative amp versus dz,dx
 	return
 
