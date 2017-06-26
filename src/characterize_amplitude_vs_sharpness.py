@@ -9,14 +9,14 @@ def main():
 
 	#print RelativeAmps
 
-	print 'DZ (km) DX (km) ASPECT AMP'
+	print '%8s %8s %8s %8s' % ('DZ (km)', 'DX (km)', 'SLOPE', 'AMP')
 
-	for DZ in [2500, 5000, 10000]:
-		for DX in [25000, 50000, 100000]:
+	for DZ in [2500, 5000, 10000, 20000, 40000]:
+		for DX in [3000, 6000, 12000, 25000, 50000, 100000]:
 			File='OUTPUT_FILES_23-%d-%d' % (DZ,DX)
 			#print SharpnessParams[File], RelativeAmps[File]
 			aspect=float(SharpnessParams[File][0])/float(SharpnessParams[File][1])
-			string=' %8d  %8d %.4f %.4f' % (SharpnessParams[File][0]/1000., SharpnessParams[File][1]/1000., aspect, RelativeAmps[File])
+			string='%8.2f %8.2f %8.4f %8.4f' % (SharpnessParams[File][0]/1000., SharpnessParams[File][1]/1000., aspect, RelativeAmps[File])
 			print string
 	
 	#list relative amp versus dz,dx
