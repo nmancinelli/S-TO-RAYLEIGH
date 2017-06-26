@@ -17,7 +17,7 @@ WAVLEN=$3
 
 LAB_WIDTH=0.0
 
-DELTA_T=0.02 #0.04 usually good
+DELTA_T=0.04 #0.04 usually good
 T_END=800  #300 usually good
 
 #must make input files
