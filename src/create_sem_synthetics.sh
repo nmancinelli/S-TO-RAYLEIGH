@@ -11,12 +11,13 @@ NPROC=1
 #LAB_AMP=$2
 #LAB_WL=$3
 
-AMP=$2
+AMP_SURF=$2
+AMP_MOHO=-25000
 WAVLEN=$3
 
 LAB_WIDTH=0.0
 
-DELTA_T=0.12 #0.04 usually good
+DELTA_T=0.02 #0.04 usually good
 T_END=800  #300 usually good
 
 #must make input files
@@ -26,8 +27,8 @@ sys.path.append('src/')
 import write_input_files as w
 H=1500000.0
 W=3000000.0
-N_ELEM_VERT=126
-N_ELEM_HORIZ=251
+N_ELEM_VERT=301
+N_ELEM_HORIZ=601
 params={
 "N_STATIONS" : 150,
 "HEIGHT" : H,
@@ -45,7 +46,7 @@ params={
 params["NTSTEP"]=round( params["T_END"] / params["DELTA_T"] )
 w.write_Par_file($NPROC,H,N_ELEM_VERT,N_ELEM_HORIZ,$LAB_WIDTH,W,**params)
 w.write_SOURCE(H,**params)
-w.write_interfaces(H,N_ELEM_VERT,W,${AMP},${WAVLEN})
+w.write_interfaces(H,N_ELEM_VERT,W,${AMP_SURF},${AMP_MOHO},${WAVLEN})
 END
 
 echo

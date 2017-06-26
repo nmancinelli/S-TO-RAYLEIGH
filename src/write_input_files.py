@@ -194,7 +194,7 @@ def write_Par_file(NPROC,H,N_ELEM_VERT,N_ELEM_HORIZ,LAB_WIDTH,W,**params):
 	fout.write('#-----------------------------------------------------------------------------\n')
 #
 #
-	fout.write('nbmodels                        = %d\n' % (1))
+	fout.write('nbmodels                        = %d\n' % (2))
 	fout.write('# available material types (see user manual for more information)\n')
 	fout.write('#   acoustic:    model_number 1 rho Vp 0  0 0 QKappa Qmu 0 0 0 0 0 0\n')
 	fout.write('#   elastic:     model_number 1 rho Vp Vs 0 0 QKappa Qmu 0 0 0 0 0 0\n')
@@ -203,9 +203,9 @@ def write_Par_file(NPROC,H,N_ELEM_VERT,N_ELEM_HORIZ,LAB_WIDTH,W,**params):
 	fout.write('#   tomo:        model_number -1 0 0 A 0 0 0 0 0 0 0 0 0 0\n')
 #
 #
-	#fout.write('%d 1 %6.1f   %6.1f %6.1f 0 0 10.0 10.0 0 0 0 0 0 0\n' % (3,2800,5660,3200))
-	#fout.write('%d 1 %6.1f   %6.1f %6.1f 0 0 10.0 10.0 0 0 0 0 0 0\n' % (2,3300,7920,4400))
-	fout.write('%d 1 %6.1f   %6.1f %6.1f 0 0 10.0 10.0 0 0 0 0 0 0\n' % (1,3300,7280,4050))
+	fout.write('%d 1 %6.1f   %6.1f %6.1f 0 0 10.0 10.0 0 0 0 0 0 0\n' % (2,2800,5660,3200))
+	fout.write('%d 1 %6.1f   %6.1f %6.1f 0 0 10.0 10.0 0 0 0 0 0 0\n' % (1,3300,7920,4400))
+	#fout.write('%d 1 %6.1f   %6.1f %6.1f 0 0 10.0 10.0 0 0 0 0 0 0\n' % (1,3300,7280,4050))
 
 	fout.write('\n')
 	fout.write('# external tomography file\n')
@@ -254,10 +254,10 @@ def write_Par_file(NPROC,H,N_ELEM_VERT,N_ELEM_HORIZ,LAB_WIDTH,W,**params):
 	fout.write('absorbleft                      = .true.\n')
 	fout.write('\n')
 	fout.write('# define the different regions of the model in the (nx,nz) spectral-element mesh\n')
-	fout.write('nbregions                       = %d              # then set below the different regions and model number for each region\n' % (1) )
+	fout.write('nbregions                       = %d              # then set below the different regions and model number for each region\n' % (2) )
 #
-	fout.write('1  %d    1  126   1\n' % (N_ELEM_HORIZ))
-	#fout.write('1  %d    1  691   1\n' % (N_ELEM_HORIZ))
+	fout.write('1  %d   1    298   1\n' % (N_ELEM_HORIZ))
+	fout.write('1  %d   299  301   2\n' % (N_ELEM_HORIZ))
 	#fout.write('1  %d  692  721   2\n' % (N_ELEM_HORIZ))
 	#fout.write('1  %d  722  751   3\n' % (N_ELEM_HORIZ))
 #
@@ -328,7 +328,7 @@ def write_SOURCE(H,**params):
 	fout=open('SOURCE.in','w')
 	fout.write('#source 1.  The components of a moment tensor source must be given in N.m, not in dyne.cm as in the DATA/CMTSOLUTION source file of the 3D version of the code.\n')
 	fout.write('source_surf                     = .false.        # source inside the medium or at the surface\n')
-	fout.write('xs                              = 0000\n')
+	fout.write('xs                              = 000\n')
 	fout.write('zs                              = %7.0f         # source location z in meters\n' % (H))
 	fout.write('source_type                     = 2              # 1 for plane P waves, 2 for plane SV waves, 3 for Rayleigh wave\n')
 	fout.write('time_function_type              = 3              # Ricker = 1, first derivative = 2, Gaussian = 3, Dirac = 4, Heaviside = 5\n')
@@ -346,14 +346,16 @@ def write_SOURCE(H,**params):
 	fout.write('factor                          = 0.75d10        # amplification factor\n')
 	fout.close()
 
-def write_interfaces(H,N_ELEM_VERT,W,AMPLITUDE,WAVLEN):
+def write_interfaces(H,N_ELEM_VERT,W,AMP_SURF,AMP_MOHO,WAVLEN):
 
 	#MOHO DEPTH
 	MD = 60000.0
 	LD =120000.0
 	#LAB DEPTH
 
-	DZ=AMPLITUDE
+	DZ_Surf=AMP_SURF
+	DZ_Moho=AMP_MOHO
+
 	DX=WAVLEN
 
 	#N_ELEM_3 = int(MD/H*N_ELEM_VERT)
@@ -372,7 +374,7 @@ def write_interfaces(H,N_ELEM_VERT,W,AMPLITUDE,WAVLEN):
 
 		x0=1000000.0
 
-		dx=1000.
+		dx=1000.0
 		xs=arange(0,W+dx,dx)
 		fout.write(' %d\n' % len(xs))
 		for x in xs:
@@ -391,23 +393,26 @@ def write_interfaces(H,N_ELEM_VERT,W,AMPLITUDE,WAVLEN):
                 xs=arange(0,W+dx,dx)
                 fout.write(' %d\n' % len(xs))
                 for x in xs:
-			y=H+a/2.0*(erf(2.*(x-x0)/xchar)-1.0)
+			y=H+a/2.0*(erf(2.*(x-x0)/xchar)+1.0)
                         fout.write(' %7.0f %7.0f\n' % (x,y))
 
 	fout=open('interfaces.dat','w')
 	fout.write('# number of interfaces\n')
-	fout.write(' 2\n')
+	fout.write(' 3\n')
 	fout.write('#\n')
 	fout.write('# for each interface below, we give the number of points and then x,z for each point\n')
 	fout.write('#\n')
 	#Build from bottom up
 	write_flat_iface(1,W,0)
-	write_erf_iface(2,W,H,DZ,DX)
+	write_erf_iface(2,W,H-8000-DZ_Surf,DZ_Moho,DX)
+	write_erf_iface(3,W,H-DZ_Surf,DZ_Surf,DX)
 	fout.write('#\n')
 	fout.write('# for each layer, we give the number of spectral elements in the vertical direction\n')
 	fout.write('#\n')
 	fout.write('# layer number 1\n')
-	fout.write('%d\n' % (N_ELEM_VERT) )
+	fout.write('%d\n' % (N_ELEM_VERT-3) )
+	fout.write('# layer number 2\n')
+	fout.write('%d\n' % (3) )
 	#fout.write('# layer number 2\n')
 	#fout.write('%d\n' % (N_ELEM_2) )
 	#fout.write('# layer number 3\n')
@@ -420,3 +425,4 @@ def linear_interp(x,x0,x1,y0,y1):
 	Wikipedia equation
 	"""
 	return y0+(y1-y0)*(x-x0)/(x1-x0)
+	write_erf_iface(2,W,H,DZ,DX)

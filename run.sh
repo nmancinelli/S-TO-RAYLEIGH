@@ -1,10 +1,10 @@
 #!/bin/bash
 #
-#SBATCH --time=00:10:00
+#SBATCH --time=02:00:00
 #SBATCH --mem=8GB
 # Default resources are 1 core with 2.8GB of memory.
 # Specify a job name:
-#SBATCH -J kernel_gen
+#SBATCH -J specfem2d
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=nicholas_mancinelli@brown.edu
 #SBATCH -J kernel_gen
