@@ -18,12 +18,12 @@ def main():
 		#add_raysum_seis_to_plot(121,'raysum_sv.'+tmp+'.xy',scale_factor=0.4,zoff=zoff,wavelet=w)
 		#add_raysum_seis_to_plot(122,'raysum_p.'+tmp+'.xy',scale_factor=12.0,zoff=zoff,wavelet=w)
 		#os.chdir('..')
-
+	vs_crust=3.2
 	vs=4.050
 	deg=23.0
 
 	from numpy import sin,pi
-	vAppRayleigh=0.92*vs;
+	vAppRayleigh=0.92*vs_crust;
 	vAppS=vs/sin(deg*pi/180.0)
 
 	print 'vAppRayleigh, vAppS = %f  %f' % (vAppRayleigh, vAppS)

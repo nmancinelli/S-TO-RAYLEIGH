@@ -11,8 +11,8 @@ def main():
 
 	print '%8s %8s %8s %8s' % ('DZ (km)', 'DX (km)', 'SLOPE', 'AMP')
 
-	for DZ in [2500, 5000, 10000, 20000, 40000]:
-		for DX in [3000, 6000, 12000, 25000, 50000, 100000]:
+	for DZ in [5000]:
+		for DX in [20000,25000,50000]:
 			File='OUTPUT_FILES_23-%d-%d' % (DZ,DX)
 			#print SharpnessParams[File], RelativeAmps[File]
 			aspect=float(SharpnessParams[File][0])/float(SharpnessParams[File][1])
@@ -73,7 +73,7 @@ def CalculateRelativeAmp(filename):
 	xSta=getXforStation(StationNumber)
 	dtwin=15.
 	PhaseAmps={}
-	vs=4.050
+	vs=3.2
 	deg=23.0
 
 	for Phase in ['S', 'Ra']:
