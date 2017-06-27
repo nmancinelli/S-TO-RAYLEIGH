@@ -13,6 +13,11 @@
 #SBATCH -e kernel_gen-%j.err
 ##
 newdir=OUTPUT_FILES_$1
+if [ -d "$newdir" ]; then
+echo "$newdir already exists, exiting."
+exit 0
+fi
+#
 mkdir $newdir
 cd $newdir
 mkdir -p DATA
