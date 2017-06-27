@@ -12,7 +12,7 @@ def main():
 	print '%8s %8s %8s %8s' % ('DZ (km)', 'DX (km)', 'SLOPE', 'AMP')
 
 	for DZ in [5000]:
-		for DX in [20000,25000,50000]:
+		for DX in [15000, 20000,25000,50000]:
 			File='OUTPUT_FILES_23-%d-%d' % (DZ,DX)
 			#print SharpnessParams[File], RelativeAmps[File]
 			aspect=float(SharpnessParams[File][0])/float(SharpnessParams[File][1])
