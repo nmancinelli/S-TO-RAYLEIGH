@@ -19,7 +19,7 @@ def main():
 		#add_raysum_seis_to_plot(122,'raysum_p.'+tmp+'.xy',scale_factor=12.0,zoff=zoff,wavelet=w)
 		#os.chdir('..')
 	vs_crust=3.2
-	vs=4.050
+	vs=4.400
 	deg=23.0
 
 	from numpy import sin,pi
@@ -30,12 +30,9 @@ def main():
 
 	plot_moveout(121,vAppRayleigh,0.0,0.0)
 	plot_moveout(121,vAppS,0.0,0.0)
-	plot_moveout(121,7.28,0.0,0.0)
 	plot_moveout(122,vAppRayleigh,0.0,0.0)
 	plot_moveout(122,vAppS,0.0,0.0)
 	
-
-
 	plt.savefig('mypost.eps')
 
 def plot_moveout(isub,vapp,xorig,torig,xmin=000.0,xmax=1100.0):
@@ -95,7 +92,7 @@ def make_sub(subplot,channel,title='',scale_factor=1.0):
 		delkm = float(nfo[2])/1000.0 - 1000.0	
 
 		fname='OUTPUT_FILES/AA.'+sta_name+'.'+channel+'.semd'
-	
+		print sta_name	
 		fin2=open(fname,'r')
 		u=[]
 		t=[]
@@ -125,7 +122,7 @@ def make_sub(subplot,channel,title='',scale_factor=1.0):
 	
 	plt.xlabel('Time after Conversion (s)')
 
-	plt.xlim([0,300])
+	plt.xlim([0,450])
 	#plt.ylim([-1,32])
 
 def write_data_xy(x,y,fname):
