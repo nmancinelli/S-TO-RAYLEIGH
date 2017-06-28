@@ -12,10 +12,14 @@ def main():
 	print '%8s %8s %8s %8s' % ('DZ (km)', 'DX (km)', 'SLOPE', 'AMP')
 
 	for DZ in [5000]:
-		for DX in [15000, 20000,25000,50000]:
+		for DX in [0, 5000, 10000, 15000, 20000, 25000]:
 			File='OUTPUT_FILES_23-%d-%d' % (DZ,DX)
 			#print SharpnessParams[File], RelativeAmps[File]
-			aspect=float(SharpnessParams[File][0])/float(SharpnessParams[File][1])
+			try:
+				aspect=float(SharpnessParams[File][0])/float(SharpnessParams[File][1])
+			except:
+				aspect=float('nan')
+	
 			string='%8.2f %8.2f %8.4f %8.4f' % (SharpnessParams[File][0]/1000., SharpnessParams[File][1]/1000., aspect, RelativeAmps[File])
 			print string
 	
@@ -55,7 +59,7 @@ def CalculateRelativeAmp(filename):
 		x=float(nfo[2])/1000. - 1000.
 		return x
 
-	StationNumber=30
+	StationNumber=100
 
 	FullFileName='%s/OUTPUT_FILES/AA.S%04d.BXZ.semd' % (filename, StationNumber)
 	
@@ -73,14 +77,15 @@ def CalculateRelativeAmp(filename):
 	xSta=getXforStation(StationNumber)
 	dtwin=15.
 	PhaseAmps={}
-	vs=3.2
+	vs_crust=3.2
+	vs_mantle=4.4
 	deg=23.0
 
 	for Phase in ['S', 'Ra']:
 		if Phase=='S':
-			vapp=vs/sin(deg*pi/180.0)
+			vapp=vs_mantle/sin(deg*pi/180.0)
 		elif Phase=='Ra':
-			vapp=0.89*vs
+			vapp=0.89*vs_crust
 		ttarg=calculateMoveout(vapp,xorig,torig,xSta)
 		tsWin,xsWin=window(t,uz,ttarg-dtwin,ttarg+dtwin)
 		PhaseAmps[Phase]=max(abs(xsWin))
