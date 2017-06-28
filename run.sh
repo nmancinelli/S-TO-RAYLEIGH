@@ -11,17 +11,21 @@
 #SBATCH -o ocean-continent-%j.out
 #SBATCH -e ocean-continent-%j.err
 ##
-newdir=OUTPUT_FILES_$1
+homedir=$(pwd)
+datedir=$(date | awk {'print $6 $2 $3'})
+newdir=${datedir}/OUTPUT_FILES_$1
 if [ -d "$newdir" ]; then
 echo "$newdir already exists, exiting."
 exit 0
 fi
 #
-mkdir $newdir
+mkdir -p $newdir
 cd $newdir
+git rev-parse HEAD > git_version.txt
 mkdir -p DATA
-ln -s ../src
+ln -s $homedir/src
 bash src/create_sem_synthetics.sh $2 $3 $4 $5
 python src/estimate_S_arrival_time.py
 python src/plot_seismos.py
-cd ..
+cd $homedir
+#
