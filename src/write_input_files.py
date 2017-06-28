@@ -405,12 +405,12 @@ def write_interfaces(H,N_ELEM_VERT,W,AMP_SURF,AMP_MOHO,WAVLEN):
 	fout.write('# for each interface below, we give the number of points and then x,z for each point\n')
 	fout.write('#\n')
 	#Build from bottom up
-	write_flat_iface(1,W,0)
-	write_flat_iface(1,W,H-45000)
-	write_flat_iface(1,W,H-8000)
-	write_flat_iface(1,W,H)
+	write_flat_iface(1,W,0) #Bottom
+	write_flat_iface(2,W,H-45000) #Moho (continent)
+	write_flat_iface(3,W,H-8000-DZ_Surf) #Moho (ocean)
+	#write_flat_iface(4,W,H) #Surface
+	write_erf_iface(4,W,H-DZ_Surf,DZ_Surf,DX)
 	#write_erf_iface(2,W,H-8000-DZ_Surf,DZ_Moho,DX)
-	#write_erf_iface(3,W,H-DZ_Surf,DZ_Surf,DX)
 	fout.write('#\n')
 	fout.write('# for each layer, we give the number of spectral elements in the vertical direction\n')
 	fout.write('#\n')
