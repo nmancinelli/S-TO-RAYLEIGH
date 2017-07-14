@@ -1,5 +1,8 @@
 all:
-	bash run_all.sh
+	bash run_all.sh 100
+
+fast:
+	bash run_all.sh 1
 
 clean:
 	rm -f err.* log.* *.out *.err
