@@ -42,7 +42,7 @@ params={
 "ILLUMINATION_DIRECTION" : 1,
 "GAP_WIDTH" : 0.0,
 "ANGLE_SOURCE" : $1,
-"P_OR_S" : 2
+"P_OR_S" : 1
 }
 params["NTSTEP"]=round( params["T_END"] / params["DELTA_T"] )
 w.write_Par_file($NPROC,H,N_ELEM_VERT,N_ELEM_HORIZ,$LAB_WIDTH,W,**params)
