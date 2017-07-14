@@ -41,7 +41,7 @@ params={
 "HORIZONTAL_SMOOTHING_LAMBDA" :0000.0,
 "ILLUMINATION_DIRECTION" : 1,
 "GAP_WIDTH" : 0.0,
-"ANGLE_SOURCE" : $1
+"ANGLE_SOURCE" : $1,
 "P_OR_S" : 2
 }
 params["NTSTEP"]=round( params["T_END"] / params["DELTA_T"] )
