@@ -409,7 +409,10 @@ def write_interfaces(H,N_ELEM_VERT,W,AMP_SURF,AMP_MOHO,WAVLEN):
 	write_flat_iface(2,W,H-45000) #Moho (continent)
 	write_flat_iface(3,W,H-8000-DZ_Surf) #Moho (ocean)
 	#write_flat_iface(4,W,H) #Surface
-	write_erf_iface(4,W,H-DZ_Surf,DZ_Surf,DX)
+	if DZ_Surf!=0:
+		write_erf_iface(4,W,H-DZ_Surf,DZ_Surf,DX)
+	else:
+		write_flat_iface(4,W,H)
 	#write_erf_iface(2,W,H-8000-DZ_Surf,DZ_Moho,DX)
 	fout.write('#\n')
 	fout.write('# for each layer, we give the number of spectral elements in the vertical direction\n')
