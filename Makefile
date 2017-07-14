@@ -1,5 +1,5 @@
 all:
-	bash run_all.sh 100
+	bash run_all.sh 800
 
 fast:
 	bash run_all.sh 1
