@@ -332,7 +332,7 @@ def write_SOURCE(H,**params):
 	fout.write('source_surf                     = .false.        # source inside the medium or at the surface\n')
 	fout.write('xs                              = 000\n')
 	fout.write('zs                              = %7.0f         # source location z in meters\n' % (H))
-	fout.write('source_type                     = 2              # 1 for plane P waves, 2 for plane SV waves, 3 for Rayleigh wave\n')
+	fout.write('source_type                     = %1d            # 1 for plane P waves, 2 for plane SV waves, 3 for Rayleigh wave\n' % (params["P_OR_S"]))
 	fout.write('time_function_type              = 3              # Ricker = 1, first derivative = 2, Gaussian = 3, Dirac = 4, Heaviside = 5\n')
 	fout.write('# time function_type == 8 source read from file, if time function_type == 9 : burst\n')
 	fout.write('# If time_function_type == 8, enter below the custom source file to read (two columns file with time and amplitude) :\n')
