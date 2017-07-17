@@ -26,6 +26,6 @@ mkdir -p DATA
 ln -s $homedir/src
 bash src/create_sem_synthetics.sh $2 $3 $4 $5
 python src/estimate_S_arrival_time.py
-python src/plot_seismos.py
+#python src/plot_seismos.py
 cd $homedir
 #
