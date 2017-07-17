@@ -102,10 +102,12 @@ def CalculateRelativeAmp(filename):
         import matplotlib as mpl
         mpl.use('PS')
         import pylab as plt
+	plt.subplot(2,1,1)
 	plt.plot(Stations, RelativeAmplitudes)
-	#plt.plot(t,uz,'black')
-	#for Phase in ['Main', 'Ra']:
-	#	plt.plot(Windows[Phase][0], Windows[Phase][1], 'red')
+	plt.subplot(2,1,2)
+	plt.plot(t,uz,'black')
+	for Phase in ['Main', 'Ra']:
+		plt.plot(Windows[Phase][0], Windows[Phase][1], 'red')
 	plt.savefig('debug.eps')
 
 	from numpy import mean, median
