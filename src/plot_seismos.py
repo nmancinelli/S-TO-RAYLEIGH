@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #
 #
+from ModelParams import ModelParams
+MP=ModelParams()
 def main():
 	import matplotlib as mpl
 	mpl.use('PS')
@@ -11,27 +13,13 @@ def main():
 	
 	w = extract_source_wavelet('BXS')
 
-	#for trace_number in range(1,31):
-		#tmp=str(trace_number).zfill(2)
-		#zoff=float(trace_number)
-		#os.chdir('TMP')
-		#add_raysum_seis_to_plot(121,'raysum_sv.'+tmp+'.xy',scale_factor=0.4,zoff=zoff,wavelet=w)
-		#add_raysum_seis_to_plot(122,'raysum_p.'+tmp+'.xy',scale_factor=12.0,zoff=zoff,wavelet=w)
-		#os.chdir('..')
-	vs_crust=3.2
-	vs=4.400
-	deg=23.0
-
-	from numpy import sin,pi
-	vAppRayleigh=0.92*vs_crust;
-	vAppS=vs/sin(deg*pi/180.0)
-
-	print 'vAppRayleigh, vAppS = %f  %f' % (vAppRayleigh, vAppS)
+	vAppRayleigh=0.92*MP.vs_crust
+	vAppMain=MP.vapp_main
 
 	plot_moveout(121,vAppRayleigh,0.0,0.0)
-	plot_moveout(121,vAppS,0.0,0.0)
+	plot_moveout(121,vAppMain,0.0,0.0)
 	plot_moveout(122,vAppRayleigh,0.0,0.0)
-	plot_moveout(122,vAppS,0.0,0.0)
+	plot_moveout(122,vAppMain,0.0,0.0)
 	
 	plt.savefig('mypost.eps')
 
@@ -83,7 +71,6 @@ def make_sub(subplot,channel,title='',scale_factor=1.0):
 
 	x=0 #init
 	seismos=[]
-	tscat=90.0
 
 	for line in fin1.readlines():
 		nfo=line.strip('\n').split()
@@ -99,7 +86,7 @@ def make_sub(subplot,channel,title='',scale_factor=1.0):
 		for line2 in fin2.readlines():
 			nfo=line2.strip('\n').split()
 			#t.append(float(nfo[0]) - tt_S )
-			t.append(float(nfo[0]) - tscat)
+			t.append(float(nfo[0]) - MP.tscat)
 			u.append(float(nfo[1]))
 
 		#x=x+1

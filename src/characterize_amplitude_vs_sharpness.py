@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 #
 #
+from ModelParams import ModelParams
+MP=ModelParams()
+
 def main():
 	#Get list of directories
 	Files=GetListOfFiles()
@@ -12,7 +15,7 @@ def main():
 	print '%8s %8s %8s %8s' % ('DZ (km)', 'DX (km)', 'SLOPE', 'AMP')
 
 	for DZ in [5000]:
-		for DX in [0, 5000, 10000, 15000, 20000, 25000]:
+		for DX in [5000, 10000, 15000, 20000, 25000]:
 			File='OUTPUT_FILES_23-%d-%d' % (DZ,DX)
 			#print SharpnessParams[File], RelativeAmps[File]
 			try:
@@ -59,45 +62,60 @@ def CalculateRelativeAmp(filename):
 		x=float(nfo[2])/1000. - 1000.
 		return x
 
-	StationNumber=100
+	RelativeAmplitudes=[]
 
-	FullFileName='%s/OUTPUT_FILES/AA.S%04d.BXZ.semd' % (filename, StationNumber)
+	Stations=range(1,150)
+
+	for StationNumber in Stations:
+		FullFileName='%s/OUTPUT_FILES/AA.S%04d.BXZ.semd' % (filename, StationNumber)
 	
-	try:
-		t,uz=readxy(FullFileName)
-	except:
-		print '***Warning: Problem reading %s' % (FullFileName)
-		return float('nan')
+		try:
+			t,uz=readxy(FullFileName)
+		except:
+			print '***Warning: Problem reading %s' % (FullFileName)
+			return float('nan')
+
+		tscat=90.0
+		t=t-MP.tscat
+
+		xorig,torig=0.,0.
+		xSta=getXforStation(StationNumber)
+		dtwin=30.
+		PhaseAmps={}
+		Windows={}
+
+		for Phase in ['Main', 'Ra']:
+			if Phase=='Main':
+				vapp=MP.vapp_main
+			elif Phase=='Ra':
+				vapp=0.89*MP.vs_crust
+			ttarg=calculateMoveout(vapp,xorig,torig,xSta)
+			tsWin,xsWin=window(t,uz,ttarg,ttarg+dtwin)
+	
+			PhaseAmps[Phase]=max(abs(xsWin))
+			Windows[Phase]=[tsWin,xsWin]
 
 
-	tscat=90.0
-	t=t-tscat
+		tmp=PhaseAmps['Ra']/PhaseAmps['Main']
+		RelativeAmplitudes.append(tmp)
 
-	xorig,torig=0.,0.
-	xSta=getXforStation(StationNumber)
-	dtwin=15.
-	PhaseAmps={}
-	vs_crust=3.2
-	vs_mantle=4.4
-	deg=23.0
-
-	for Phase in ['S', 'Ra']:
-		if Phase=='S':
-			vapp=vs_mantle/sin(deg*pi/180.0)
-		elif Phase=='Ra':
-			vapp=0.89*vs_crust
-		ttarg=calculateMoveout(vapp,xorig,torig,xSta)
-		tsWin,xsWin=window(t,uz,ttarg-dtwin,ttarg+dtwin)
-		PhaseAmps[Phase]=max(abs(xsWin))
-
-        #import matplotlib as mpl
-        #mpl.use('PS')
-        #import pylab as plt
+        import matplotlib as mpl
+        mpl.use('PS')
+        import pylab as plt
+	plt.plot(Stations, RelativeAmplitudes)
 	#plt.plot(t,uz,'black')
-	#plt.plot(tsWin,xsWin,'red')
-	#plt.savefig('debug.eps')
+	#for Phase in ['Main', 'Ra']:
+	#	plt.plot(Windows[Phase][0], Windows[Phase][1], 'red')
+	plt.savefig('debug.eps')
 
-	return PhaseAmps['Ra']/PhaseAmps['S']
+	from numpy import mean, median
+	
+	avg1 = mean(RelativeAmplitudes)
+	avg2 = median(RelativeAmplitudes)
+
+	print avg1, avg2, min(RelativeAmplitudes), max(RelativeAmplitudes)
+
+	return avg1
 
 def GetSharpnessParams(Files):
 	SharpnessParams={}
