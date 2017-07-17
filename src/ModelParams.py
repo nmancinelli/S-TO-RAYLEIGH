@@ -9,7 +9,7 @@ class ModelParams:
 		self.vs_crust=vs_crust
 		self.deg=deg
 		if phase=='S':
-			self.tscat=90
+			self.tscat=75
 			self.vapp_main=vs/sin(deg*pi/180.0)
 		elif phase=='P':
 			self.tscat=40
